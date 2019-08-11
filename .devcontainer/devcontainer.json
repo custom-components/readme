@@ -9,9 +9,11 @@
 	],
 	"extensions": [
 		"ms-python.python",
+		"github.vscode-pull-request-github",
 		"tabnine.tabnine-vscode"
 	],
 	"settings": {
+		"editor.tabSize": 4,
 		"python.pythonPath": "/usr/local/bin/python",
 		"python.linting.pylintEnabled": true,
 		"python.linting.enabled": true,

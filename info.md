@@ -1,98 +1,60 @@
-[![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
-[![License][license-shield]](LICENSE.md)
-
-[![hacs][hacsbadge]](hacs)
-![Project Maintenance][maintenance-shield]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
-
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
-
-_Component to integrate with [blueprint][blueprint]._
-
-**This component will set up the following platforms.**
-
-Platform | Description
--- | --
-`binary_sensor` | Show something `True` or `False`.
-`sensor` | Show info from blueprint API.
-`switch` | Switch something `True` or `False`.
-
-![example][exampleimg]
-
-{% if not installed %}
-## Installation
-
-1. Click install.
-1. Add `blueprint:` to your HA configuration.
-
-{% endif %}
 ## Example configuration.yaml
 
 ```yaml
-blueprint:
-  username: my_username
-  password: my_password
-  binary_sensor:
-    - enabled: true
-      name: My custom name
-  sensor:
-    - enabled: true
-      name: My custom name
-  switch:
-    - enabled: true
-      name: My custom name
+readme:
 ```
 
 ## Configuration options
 
 Key | Type | Required | Description
 -- | -- | -- | --
-`username` | `string` | `False` | Username for the client.
-`password` | `string` | `False` | Password for the client.
-`binary_sensor` | `list` | `False` | Configuration for the `binary_sensor` platform.
-`sensor` | `list` | `False` | Configuration for the `sensor` platform.
-`switch` | `list` | `False` | Configuration for the `switch` platform.
+`convert_lovelace` | `boolean` | `False` | Generate a `ui.lovelace.yaml` file (only usefull if you use the UI to edit lovelace and want to share that in a yaml format.)
 
-### Configuration options for `binary_sensor` list
+## Warnings!
 
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`enabled` | `boolean` | `False` | `True` | Boolean to enable/disable the platform.
-`name` | `string` | `False` | `blueprint` | Custom name for the entity.
+This integration **will** replace your files!:
 
-### Configuration options for `sensor` list
+- README.md
+- ui-lovelace.yaml (if you enable `convert_lovelace`)
 
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`enabled` | `boolean` | `False` | `True` | Boolean to enable/disable the platform.
-`name` | `string` | `False` | `blueprint` | Custom name for the entity.
+## Usage
 
+In the root of your configuration directory (folder) you will get a new directory (folder) called "templates" in that directory (folder) there will be a file called "README.j2" this is where you change the template that will be used for generation of the README.md file.
 
-### Configuration options for `switch` list
+When you are happy with how the template look, run the service `readme.generate` in Home Assistant, this will generate the README.md file, and the ui-lovelace.yaml file if you enabled that.
 
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`enabled` | `boolean` | `False` | `True` | Boolean to enable/disable the platform.
-`name` | `string` | `False` | `blueprint` | Custom name for the entity.
+## Usable variables
 
+In addition to all [Jijna magic you can do](https://jinja.palletsprojects.com/en/2.10.x/templates/), there is also some additional variables you can use in the templates.
 
-***
+Variable | Description
+-- | --
+`states` | This is the same as with the rest of Home Assistant.
+`custom_components` | Gives you a list of information about your custom_components
 
-[blueprint]: https://github.com/custom-components/blueprint
-[buymecoffee]: https://www.buymeacoffee.com/ludeeus
-[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
-[commits]: https://github.com/custom-components/blueprint/commits/master
-[hacs]: https://github.com/custom-components/hacs
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
-[discord]: https://discord.gg/Qa5fW2R
-[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
-[exampleimg]: example.png
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
-[forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Joakim%20Sørensen%20%40ludeeus-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-components/blueprint.svg?style=for-the-badge
-[releases]: https://github.com/custom-components/blueprint/releases
+The information about custom components are fetched from the integrations manifest.json file, the folowing keys are aviable:
+
+- `domain`
+- `name`
+- `documentation`
+- `codeowner`
+
+**Example usage of the  `custom_components` variable:**
+
+```
+{%- set custom_component_descriptions = {"readme": "Generates this awesome readme file."} -%}
+{% for integration in custom_components %}
+### [{{integration.name}}]({{integration.documentation}})
+{% if integration.domain in custom_component_descriptions %}
+_{{custom_component_descriptions[integration.domain]}}_
+{% endif -%}
+{% endfor -%}
+```
+
+If you only use this integration the output of that will be:
+
+```
+### [Generate readme](https://github.com/custom-components/readme)
+
+_Generates this awesome readme file._
+```
