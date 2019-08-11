@@ -105,11 +105,11 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 ***
 
-[blueprint]: https://github.com/custom-components/blueprint
+[readme]: https://github.com/custom-components/readme
 [buymecoffee]: https://www.buymeacoffee.com/ludeeus
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
-[commits]: https://github.com/custom-components/blueprint/commits/master
+[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/readme.svg?style=for-the-badge
+[commits]: https://github.com/custom-components/readme/commits/master
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
@@ -117,7 +117,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [exampleimg]: example.png
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/custom-components/readme.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Joakim%20Sørensen%20%40ludeeus-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-components/blueprint.svg?style=for-the-badge
-[releases]: https://github.com/custom-components/blueprint/releases
+[releases-shield]: https://img.shields.io/github/release/custom-components/readme.svg?style=for-the-badge
+[releases]: https://github.com/custom-components/readme/releases
