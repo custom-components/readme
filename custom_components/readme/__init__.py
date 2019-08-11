@@ -127,13 +127,13 @@ def create_initial_files(hass):
     if not os.path.exists(f"{base}/templates"):
         os.mkdir(f"{base}/templates")
 
-        if not os.path.exists(f"{base}/templates/README.j2"):
-            from shutil import copyfile
+    if not os.path.exists(f"{base}/templates/README.j2"):
+        from shutil import copyfile
 
-            copyfile(
-                f"{base}/custom_components/readme/default.j2",
-                f"{base}/templates/README.j2",
-            )
+        copyfile(
+            f"{base}/custom_components/readme/default.j2",
+            f"{base}/templates/README.j2",
+        )
 
 
 def convert_lovelace(hass):

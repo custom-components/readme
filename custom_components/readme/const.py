@@ -2,7 +2,7 @@
 # Base component constants
 DOMAIN = "readme"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 REQUIRED_FILES = [
     ".translations/en.json",
     "const.py",
