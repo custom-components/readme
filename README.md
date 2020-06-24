@@ -91,6 +91,103 @@ _{{custom_component_descriptions[integration.domain]}}_
 {% endfor -%}
 ```
 
+**Example usage for documenting Alexa smart home utterances**
+```
+{%- set alexa_configuration = 
+	{
+		"domains": ["light", "camera", "vacuum", "fan"],
+		"entities": {
+			"included": ["climate.downstairs", "input_boolean.guest_mode", "input_boolean.assistant_notifications", "input_boolean.andrea_morning", "cover.garage_door"],
+			"excluded": ["light.kitchen_light_1", "light.kitchen_light_2", "light.cabinet_split", "light.cabinet_large", "light.test_sensor_led", "camera.doorbell"]
+		}
+	}
+-%}
+{% set data = namespace(domains=[]) %}
+{%- for state in states %}
+{%- if (state.entity_id in alexa_configuration.entities.included) or (state.entity_id not in alexa_configuration.entities.included and state.domain in alexa_configuration.domains) %}
+{%- if state.domain not in data.domains %}
+{%- set data.domains = data.domains + [state.domain] %}
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+{%- for domain in data.domains %}
+###  {{ sentence_case(domain) }}
+{%- if domain == 'climate' %}
+Control a thermostat temperature, run mode, etc...
+
+Climate Mode | Accepted words
+-- | --
+AUTO | "auto", "automatic"
+COOL | "cool", "cooling"
+HEAT | "heat", "heating"
+ECO | "eco", "economical"
+OFF | "off"
+
+**What you say:**
+
+_"Alexa, set thermostat to 70."_  
+_"Alexa, set the AC to 70."_  
+_"Alexa, make it warmer in here."_  
+_"Alexa, make it cooler in here."_  
+_"Alexa, set `DEVICE NAME` to `CLIMATE MODE`."_  
+_"Alexa, turn on the `CLIMATE MODE`."_  
+_"Alexa, turn off the `DEVICE NAME`."_  
+{% endif %}
+**Device Names:**
+{%- for state in states[domain] %}
+{%- if (state.entity_id in alexa_configuration.entities.included) or (state.entity_id not in alexa_configuration.entities.included and state.domain in alexa_configuration.domains) %}
+{%- if state.entity_id not in alexa_configuration.entities.excluded %}
+- {{state.name}}
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+{%- endfor %}
+```
+
+### Sensors
+
+Create a long-lived access token in Home Assistant
+
+```yaml
+sensor:
+  - platform: version
+  - platform: rest
+    name: Addons
+    resource: 'https://your-ha-url/api/hassio/supervisor/info'
+    headers:
+      Authorization: 'Bearer yourlonglivedaccesstoken'
+    json_attributes_path: "$.data"
+    json_attributes:
+      - addons
+      - addons_repositories
+    value_template: '{{ value_json.data.addons | count}}'
+```
+
+**Example usage of Home Assistant version badge**
+```
+[![HA Version](https://img.shields.io/badge/Home%20Assistant-{{states.sensor.current_version.state}}-brightgreen)](https://github.com/home-assistant/home-assistant/releases/{{states.sensor.current_version.state}})
+```
+
+**Example usage of listing addon repositories**
+```
+{% for repository in states.sensor.addons.attributes.addons_repositories | sort -%}
+- {{ repository }}
+{% endfor %}
+```
+
+**Example usage of listing addons**
+```
+{%- set addon_docs = 
+	{
+		"core_samba": "https://github.com/home-assistant/hassio-addons/tree/master/samba",
+		"core_mariadb": "https://github.com/home-assistant/hassio-addons/tree/master/mariadb"
+	}
+-%}
+{% for addon in states.sensor.addons.attributes.addons | sort(attribute='name') -%}
+- [{{ addon.name }}]({{addon_docs[addon.slug]}})
+{% endfor %}
+```
+
 If you only use this integration the output of that will be:
 
 ```
