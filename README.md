@@ -71,13 +71,22 @@ Variable | Description
 -- | --
 `states` | This is the same as with the rest of Home Assistant.
 `custom_components` | Gives you a list of information about your custom_components
+`hacs_components` | Gives you a list of information about HACS installed integrations, plugins, and themes
 
-The information about custom components are fetched from the integrations manifest.json file, the folowing keys are aviable:
+The information about custom components are fetched from the integrations manifest.json file, the folowing keys are available:
 
 - `domain`
 - `name`
 - `documentation`
 - `codeowner`
+
+The information about HACS components are fetched from the storage hacs files, the folowing keys are available:
+
+- `category`
+- `name`
+- `documentation`
+- `authors`
+- `description`
 
 **Example usage of the  `custom_components` variable:**
 
@@ -89,6 +98,25 @@ The information about custom components are fetched from the integrations manife
 _{{custom_component_descriptions[integration.domain]}}_
 {% endif -%}
 {% endfor -%}
+```
+
+**Example usage of the  `hacs_components` variable:**
+
+```
+### Integrations
+{%- for component in hacs_components | selectattr('category', 'equalto', 'integration') | sort(attribute='name') %}
+- [{{component.name}}]({{component.documentation}})
+{%- endfor %}
+
+### Lovelace
+{%- for component in hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') %}
+- [{{component.name}}]({{component.documentation}})
+{%- endfor %}
+
+### Themes
+{%- for component in hacs_components | selectattr('category', 'equalto', 'theme') | sort(attribute='name') %}
+- [{{component.name}}]({{component.documentation}})
+{%- endfor %}
 ```
 
 **Example usage for documenting Alexa smart home utterances**
