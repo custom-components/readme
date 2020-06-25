@@ -102,6 +102,9 @@ _{{custom_component_descriptions[integration.domain]}}_
 		}
 	}
 -%}
+{%- macro sentence_case(text) -%}
+	{{ text[0]|upper}}{{text[1:] }}
+{%- endmacro -%}
 {% set data = namespace(domains=[]) %}
 {%- for state in states %}
 {%- if (state.entity_id in alexa_configuration.entities.included) or (state.entity_id not in alexa_configuration.entities.included and state.domain in alexa_configuration.domains) %}
