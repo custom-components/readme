@@ -198,51 +198,13 @@ def get_hacs_components(hass):
 
     for repo in repositories:
         if repo.data.installed:
-            installed.append(
-                {
-                    "additional_info": repo.information.additional_info,
-                    "authors": repo.data.authors,
-                    "available_version": repo.display_available_version,
-                    "beta": repo.data.show_beta,
-                    "can_install": repo.can_install,
-                    "category": repo.data.category,
-                    "country": repo.data.country,
-                    "config_flow": repo.data.config_flow,
-                    "custom": repo.custom,
-                    "default_branch": repo.data.default_branch,
-                    "description": repo.data.description,
-                    "domain": repo.data.domain,
-                    "downloads": repo.data.downloads,
-                    "file_name": repo.data.file_name,
-                    "first_install": repo.status.first_install,
-                    "full_name": repo.data.full_name,
-                    "hide": repo.data.hide,
-                    "hide_default_branch": repo.data.hide_default_branch,
-                    "homeassistant": repo.data.homeassistant,
-                    "id": repo.data.id,
-                    "info": repo.information.info,
-                    "installed_version": repo.display_installed_version,
-                    "installed": repo.data.installed,
-                    "issues": repo.data.open_issues,
-                    "javascript_type": repo.information.javascript_type,
-                    "last_updated": repo.data.last_updated,
-                    "local_path": repo.content.path.local,
-                    "main_action": repo.main_action,
-                    "name": get_repository_name(repo),
-                    "new": repo.data.new,
-                    "pending_upgrade": repo.pending_upgrade,
-                    "releases": repo.data.published_tags,
-                    "selected_tag": repo.data.selected_tag,
-                    "stars": repo.data.stargazers_count,
-                    "state": repo.state,
-                    "status_description": repo.display_status_description,
-                    "status": repo.display_status,
-                    "topics": repo.data.topics,
-                    "updated_info": repo.status.updated_info,
-                    "version_or_commit": repo.display_version_or_commit,
-                    "documentation": "https://github.com/" + repo.data.full_name,
-                }
-            )
+            repo_json = repo.data.to_json()
+
+            # Add additional properites to json
+            repo_json["name"] = get_repository_name(repo)
+            repo_json["documentation"] = "https://github.com/" + repo.data.full_name
+
+            installed.append(repo_json)
 
     return installed
 
