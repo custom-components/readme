@@ -18,7 +18,7 @@ from homeassistant.util import Throttle
 from integrationhelper import Logger
 from integrationhelper.const import CC_STARTUP_VERSION
 
-from .const import DOMAIN_DATA, DOMAIN, ISSUE_URL, REQUIRED_FILES, VERSION
+from .const import DOMAIN_DATA, DOMAIN, ISSUE_URL, REQUIRED_FILES, INTEGRATION_VERSION
 
 CONFIG_SCHEMA = vol.Schema(
     {DOMAIN: vol.Schema({vol.Optional("convert_lovelace"): cv.boolean})},
@@ -41,7 +41,7 @@ async def async_setup(hass, config):
     # Print startup message
     Logger("custom_components.readme").info(
         CC_STARTUP_VERSION.format(
-            name=DOMAIN.capitalize(), version=VERSION, issue_link=ISSUE_URL
+            name=DOMAIN.capitalize(), version=INTEGRATION_VERSION, issue_link=ISSUE_URL
         )
     )
 
@@ -79,7 +79,7 @@ async def async_setup_entry(hass, config_entry):
     # Print startup message
     Logger("custom_components.readme").info(
         CC_STARTUP_VERSION.format(
-            name=DOMAIN.capitalize(), version=VERSION, issue_link=ISSUE_URL
+            name=DOMAIN.capitalize(), version=INTEGRATION_VERSION, issue_link=ISSUE_URL
         )
     )
 

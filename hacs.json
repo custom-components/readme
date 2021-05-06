@@ -1,0 +1,7 @@
+{
+  "name": "Generate readme",
+  "iot_class": "Local Push",
+  "zip_release": true,
+  "filename": "readme.zip",
+  "hide_default_branch": true
+}
