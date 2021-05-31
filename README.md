@@ -44,18 +44,18 @@ custom_components/readme/services.yaml
 readme:
 ```
 
-## Configuration options
-
-Key | Type | Required | Description
--- | -- | -- | --
-`convert_lovelace` | `boolean` | `False` | Generate a `ui.lovelace.yaml` file (only usefull if you use the UI to edit lovelace and want to share that in a yaml format.)
-
-## Warnings!
+## Warning!
 
 This integration **will** replace your files!:
 
 - README.md
 - ui-lovelace.yaml (if you enable `convert_lovelace`)
+
+## Configuration options
+
+Key | Type | Required | Description
+-- | -- | -- | --
+`convert_lovelace` | `boolean` | `False` | Generate a `ui-lovelace.yaml` file (only usefull if you use the UI to edit lovelace and want to share that in a yaml format.)
 
 ## Usage
 
@@ -70,17 +70,18 @@ In addition to all [Jijna magic you can do](https://jinja.palletsprojects.com/en
 Variable | Description
 -- | --
 `states` | This is the same as with the rest of Home Assistant.
-`custom_components` | Gives you a list of information about your custom_components
+`custom_components` | Gives you a list of information about your custom_integrations
 `hacs_components` | Gives you a list of information about HACS installed integrations, plugins, and themes
 
-The information about custom components are fetched from the integrations manifest.json file, the folowing keys are available:
+The information about custom integrations are fetched from the integrations manifest.json file, the folowing keys are available:
 
 - `domain`
 - `name`
 - `documentation`
-- `codeowner`
+- `codeowners`
+- `version`
 
-The information about HACS components are fetched from the storage hacs files, the folowing keys are available:
+The information about integrations tracked with HACS are fetched from the storage hacs files, the folowing keys are available:
 
 - `category`
 - `name`
@@ -121,7 +122,7 @@ _{{custom_component_descriptions[integration.domain]}}_
 
 **Example usage for documenting Alexa smart home utterances**
 ```
-{%- set alexa_configuration = 
+{%- set alexa_configuration =
 	{
 		"domains": ["light", "camera", "vacuum", "fan"],
 		"entities": {
@@ -156,13 +157,13 @@ OFF | "off"
 
 **What you say:**
 
-_"Alexa, set thermostat to 70."_  
-_"Alexa, set the AC to 70."_  
-_"Alexa, make it warmer in here."_  
-_"Alexa, make it cooler in here."_  
-_"Alexa, set `DEVICE NAME` to `CLIMATE MODE`."_  
-_"Alexa, turn on the `CLIMATE MODE`."_  
-_"Alexa, turn off the `DEVICE NAME`."_  
+_"Alexa, set thermostat to 70."_
+_"Alexa, set the AC to 70."_
+_"Alexa, make it warmer in here."_
+_"Alexa, make it cooler in here."_
+_"Alexa, set `DEVICE NAME` to `CLIMATE MODE`."_
+_"Alexa, turn on the `CLIMATE MODE`."_
+_"Alexa, turn off the `DEVICE NAME`."_
 {% endif %}
 **Device Names:**
 {%- for state in states[domain] %}
@@ -173,50 +174,6 @@ _"Alexa, turn off the `DEVICE NAME`."_
 {%- endif %}
 {%- endfor %}
 {%- endfor %}
-```
-
-### Sensors
-
-Create a long-lived access token in Home Assistant
-
-```yaml
-sensor:
-  - platform: version
-  - platform: rest
-    name: Addons
-    resource: 'https://your-ha-url/api/hassio/supervisor/info'
-    headers:
-      Authorization: 'Bearer yourlonglivedaccesstoken'
-    json_attributes_path: "$.data"
-    json_attributes:
-      - addons
-      - addons_repositories
-    value_template: '{{ value_json.data.addons | count}}'
-```
-
-**Example usage of Home Assistant version badge**
-```
-[![HA Version](https://img.shields.io/badge/Home%20Assistant-{{states.sensor.current_version.state}}-brightgreen)](https://github.com/home-assistant/home-assistant/releases/{{states.sensor.current_version.state}})
-```
-
-**Example usage of listing addon repositories**
-```
-{% for repository in states.sensor.addons.attributes.addons_repositories | sort -%}
-- {{ repository }}
-{% endfor %}
-```
-
-**Example usage of listing addons**
-```
-{%- set addon_docs = 
-	{
-		"core_samba": "https://github.com/home-assistant/hassio-addons/tree/master/samba",
-		"core_mariadb": "https://github.com/home-assistant/hassio-addons/tree/master/mariadb"
-	}
--%}
-{% for addon in states.sensor.addons.attributes.addons | sort(attribute='name') -%}
-- [{{ addon.name }}]({{addon_docs[addon.slug]}})
-{% endfor %}
 ```
 
 If you only use this integration the output of that will be:
