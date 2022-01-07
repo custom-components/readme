@@ -99,7 +99,7 @@ async def convert_lovelace(hass: HomeAssistant):
     """Convert the lovelace configuration."""
     if os.path.exists(hass.config.path(".storage/lovelace")):
         content = (
-            json.loads(read_file(hass, ".storage/lovelace") or {})
+            json.loads(await read_file(hass, ".storage/lovelace") or {})
             .get("data", {})
             .get("config", {})
         )
@@ -147,7 +147,7 @@ async def add_services(hass: HomeAssistant):
         if hass.data[DOMAIN_DATA].get("convert") or hass.data[DOMAIN_DATA].get(
             "convert_lovelace"
         ):
-            convert_lovelace(hass)
+            await convert_lovelace(hass)
 
         custom_components = await get_custom_integrations(hass)
         hacs_components = get_hacs_components()
