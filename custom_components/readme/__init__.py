@@ -131,7 +131,7 @@ async def write_file(
     def write():
         with open(hass.config.path(path), "w") as open_file:
             if as_yaml:
-                yaml.dump(content, open_file, default_flow_style=False)
+                yaml.dump(content, open_file, default_flow_style=False, allow_unicode=True)
             else:
                 open_file.write(content)
 
