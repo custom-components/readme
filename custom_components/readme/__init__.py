@@ -184,7 +184,7 @@ def get_hacs_components():
             "name": get_repository_name(repo),
             "documentation": f"https://github.com/{repo.data.full_name}",
         }
-        for repo in hacs.repositories or []
+        for repo in hacs.repositories or [] if repo.data.installed
     ]
 
 
