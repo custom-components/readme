@@ -10,7 +10,7 @@ import asyncio
 import json
 import os
 from shutil import copyfile
-from typing import Any, List
+from typing import Any, List, Dict
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
@@ -152,11 +152,13 @@ async def add_services(hass: HomeAssistant):
 
         custom_components = await get_custom_integrations(hass)
         hacs_components = get_hacs_components(hass)
+        installed_addons = get_ha_installed_addons(hass)
 
         variables = {
             "custom_components": custom_components,
             "states": AllStates(hass),
             "hacs_components": hacs_components,
+            "addons": installed_addons,
         }
 
         content = await read_file(hass, "templates/README.j2")
@@ -183,6 +185,15 @@ def get_hacs_components(hass: HomeAssistant):
         }
         for repo in hacs.repositories.list_downloaded or []
     ]
+
+
+def get_ha_installed_addons(hass: HomeAssistant) -> List[Dict[str, Any]]:
+    supervisor_info = hass.components.hassio.get_supervisor_info()
+
+    if supervisor_info:
+        return supervisor_info.get("addons", [])
+    else:
+        return []
 
 
 def get_repository_name(repository) -> str:
