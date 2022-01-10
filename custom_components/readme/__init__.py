@@ -15,7 +15,6 @@ from typing import Any, List
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 import yaml
-from custom_components.hacs.const import DOMAIN as HACS_DOMAIN
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.template import AllStates
@@ -173,7 +172,8 @@ async def add_services(hass: HomeAssistant):
 
 
 def get_hacs_components(hass: HomeAssistant):
-    hacs = hass.data.get(HACS_DOMAIN)
+    if (hacs := hass.data.get("hacs")) is None:
+        return []
 
     return [
         {
@@ -181,7 +181,7 @@ def get_hacs_components(hass: HomeAssistant):
             "name": get_repository_name(repo),
             "documentation": f"https://github.com/{repo.data.full_name}",
         }
-        for repo in hacs.repositories.list_downloaded or [] if repo.data.installed
+        for repo in hacs.repositories.list_downloaded or []
     ]
 
 
