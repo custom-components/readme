@@ -17,17 +17,17 @@ Number of sensors | {{states.sensor | count}}
 - {{addon.name}}
 {%- endfor %}
 
-### HACS Integrations (custom_components)
+### Custom integrations
 {%- for component in hacs_components | selectattr('category', 'equalto', 'integration') | sort(attribute='name') %}
 - [{{component.name}}]({{component.documentation}})
 {%- endfor %}
 
-### HACS Frontend - Plugins
+### Lovelace plugins
 {%- for component in hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') %}
 - [{{component.name}}]({{component.documentation}})
 {%- endfor %}
 
-### HACS Frontend - Themes
+### Themes
 {%- for component in hacs_components | selectattr('category', 'equalto', 'theme') | sort(attribute='name') %}
 - [{{component.name}}]({{component.documentation}})
 {%- endfor %}

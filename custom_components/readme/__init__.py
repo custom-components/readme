@@ -10,13 +10,13 @@ import asyncio
 import json
 import os
 from shutil import copyfile
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 import yaml
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant
+from homeassistant.core import callback, HomeAssistant
 from homeassistant.helpers.template import AllStates
 from homeassistant.loader import Integration, IntegrationNotFound, async_get_integration
 from homeassistant.setup import async_get_loaded_integrations
@@ -187,13 +187,15 @@ def get_hacs_components(hass: HomeAssistant):
     ]
 
 
+@callback
 def get_ha_installed_addons(hass: HomeAssistant) -> List[Dict[str, Any]]:
+    if not hass.components.hassio.is_hassio():
+        return []
     supervisor_info = hass.components.hassio.get_supervisor_info()
 
     if supervisor_info:
         return supervisor_info.get("addons", [])
-    else:
-        return []
+    return []
 
 
 def get_repository_name(repository) -> str:

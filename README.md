@@ -17,16 +17,7 @@ with the list of all your installed add-ons and custom components_
 
 ## Installation
 
-1. Install it with HACS
-
-OR 
-
-1. Install it manually
-   1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-   2. If you do not have a `custom_components` directory (folder) there, you need to create it.
-   3. In the `custom_components` directory (folder) create a new folder called `readme`.
-   4. Download _all_ the files from the `custom_components/readme/` directory (folder) in this repository.
-   5. Place the files you downloaded in the new directory (folder) you created.
+1. Download it with HACS
 2. Restart Home Assistant
 3. Choose:
    - Add `readme:` to your HA configuration.
@@ -71,7 +62,7 @@ When you are happy with how the template look, run the service `readme.generate`
 
 ## Usable variables
 
-In addition to all [Jijna magic you can do](https://jinja.palletsprojects.com/en/2.10.x/templates/), there is also some additional variables you can use in the templates.
+In addition to all [Jinja magic you can do](https://jinja.palletsprojects.com/en/2.10.x/templates/), there is also some additional variables you can use in the templates.
 
 Variable | Description
 -- | --
@@ -131,7 +122,8 @@ The information about integrations tracked with HACS are fetched from the storag
 {%- endfor %}
 ```
 
-### addons
+### Add-ons
+
 
 The following keys are available:
 
