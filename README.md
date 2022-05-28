@@ -11,18 +11,15 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Use Jinja and data from Home Assistant to generate your README.md file_
+_Use Jinja and data from Home Assistant to generate your README.md file 
+with the list of all your installed add-ons and custom components_
 
 
 ## Installation
 
-1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-2. If you do not have a `custom_components` directory (folder) there, you need to create it.
-3. In the `custom_components` directory (folder) create a new folder called `readme`.
-4. Download _all_ the files from the `custom_components/readme/` directory (folder) in this repository.
-5. Place the files you downloaded in the new directory (folder) you created.
-6. Restart Home Assistant
-7. Choose:
+1. Download it with HACS
+2. Restart Home Assistant
+3. Choose:
    - Add `readme:` to your HA configuration.
    - In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Generate readme"
 
@@ -65,13 +62,16 @@ When you are happy with how the template look, run the service `readme.generate`
 
 ## Usable variables
 
-In addition to all [Jijna magic you can do](https://jinja.palletsprojects.com/en/2.10.x/templates/), there is also some additional variables you can use in the templates.
+In addition to all [Jinja magic you can do](https://jinja.palletsprojects.com/en/2.10.x/templates/), there is also some additional variables you can use in the templates.
 
 Variable | Description
 -- | --
 `states` | This is the same as with the rest of Home Assistant.
 `custom_components` | Gives you a list of information about your custom_integrations
 `hacs_components` | Gives you a list of information about HACS installed integrations, plugins, and themes
+`addons` | List of installed Home Assistant Add-ons 
+
+### custom_components
 
 The information about custom integrations are fetched from the integrations manifest.json file, the folowing keys are available:
 
@@ -80,14 +80,6 @@ The information about custom integrations are fetched from the integrations mani
 - `documentation`
 - `codeowners`
 - `version`
-
-The information about integrations tracked with HACS are fetched from the storage hacs files, the folowing keys are available:
-
-- `category`
-- `name`
-- `documentation`
-- `authors`
-- `description`
 
 **Example usage of the  `custom_components` variable:**
 
@@ -100,6 +92,16 @@ _{{custom_component_descriptions[integration.domain]}}_
 {% endif -%}
 {% endfor -%}
 ```
+
+### hacs_components
+
+The information about integrations tracked with HACS are fetched from the storage hacs files, the folowing keys are available:
+
+- `category`
+- `name`
+- `documentation`
+- `authors`
+- `description`
 
 **Example usage of the  `hacs_components` variable:**
 
@@ -119,6 +121,30 @@ _{{custom_component_descriptions[integration.domain]}}_
 - [{{component.name}}]({{component.documentation}})
 {%- endfor %}
 ```
+
+### Add-ons
+
+
+The following keys are available:
+
+- `name`
+- `slug`
+- `description`
+- `state`
+- `version`
+- `version_latest`
+- `update_available`
+- `repository`
+
+**Example usage:**
+```
+## Add-ons
+{%- for addon in addons | sort(attribute='name') %}
+- {{addon.name}} ({{addon.version}}) - {{addon.description}}
+{%- endfor %}
+```
+
+## Others
 
 **Example usage for documenting Alexa smart home utterances**
 ```
@@ -174,14 +200,6 @@ _"Alexa, turn off the `DEVICE NAME`."_
 {%- endif %}
 {%- endfor %}
 {%- endfor %}
-```
-
-If you only use this integration the output of that will be:
-
-```
-### [Generate readme](https://github.com/custom-components/readme)
-
-_Generates this awesome readme file._
 ```
 
 ## Contributions are welcome!
