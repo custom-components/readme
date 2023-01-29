@@ -1,2 +1,14 @@
-custom_components/hacs
+## Python temp files
 __pycache__
+
+## Home Assistant files
+.cloud
+.storage
+.HA_VERSION
+blueprints
+deps
+home-assistant.*
+*.db*
+
+## Integration files
+templates

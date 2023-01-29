@@ -1,17 +1,14 @@
-// See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-	"image": "ludeeus/container:integration-debian",
-	"name": "Blueprint integration development",
-	"context": "..",
-	"appPort": [
+	"name": "custom-components/readme",
+	"image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.10-bullseye",
+	"remoteUser": "vscode",
+	"context": ".",
+	"forwardPorts": [
 		"9123:8123"
 	],
-	"postCreateCommand": "container install",
+	"postCreateCommand": "scripts/setup",
 	"extensions": [
-		"ms-python.python",
-		"github.vscode-pull-request-github",
-		"ryanluker.vscode-coverage-gutters",
-		"ms-python.vscode-pylance"
+		"ms-python.python"
 	],
 	"settings": {
 		"files.eol": "\n",
