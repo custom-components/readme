@@ -11,7 +11,7 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Use Jinja and data from Home Assistant to generate your README.md file 
+_Use Jinja and data from Home Assistant to generate your README.md file
 with the list of all your installed add-ons and custom components_
 
 
@@ -69,7 +69,7 @@ Variable | Description
 `states` | This is the same as with the rest of Home Assistant.
 `custom_components` | Gives you a list of information about your custom_integrations
 `hacs_components` | Gives you a list of information about HACS installed integrations, plugins, and themes
-`addons` | List of installed Home Assistant Add-ons 
+`addons` | List of installed Home Assistant Add-ons
 
 ### custom_components
 
@@ -212,7 +212,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [buymecoffee]: https://www.buymeacoffee.com/ludeeus
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/readme.svg?style=for-the-badge
-[commits]: https://github.com/custom-components/readme/commits/master
+[commits]: https://github.com/custom-components/readme/commits/main
 [hacs]: https://github.com/hacs/integration
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
