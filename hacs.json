@@ -1,6 +1,5 @@
 {
   "name": "Generate readme",
-  "iot_class": "calculated",
   "zip_release": true,
   "filename": "readme.zip",
   "homeassistant": "2021.5.0",
