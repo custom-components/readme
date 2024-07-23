@@ -17,6 +17,7 @@ import voluptuous as vol
 import yaml
 from homeassistant import config_entries
 from homeassistant.core import callback, HomeAssistant
+from homeassistant.components.hassio import is_hassio, get_supervisor_info  # type: ignore
 from homeassistant.helpers.template import AllStates
 from homeassistant.loader import Integration, IntegrationNotFound, async_get_integration
 from homeassistant.setup import async_get_loaded_integrations
@@ -100,7 +101,7 @@ async def convert_lovelace(hass: HomeAssistant):
     """Convert the lovelace configuration."""
     if os.path.exists(hass.config.path(".storage/lovelace")):
         content = (
-            json.loads(await read_file(hass, ".storage/lovelace") or {})
+            json.loads(await read_file(hass, ".storage/lovelace") or "{}")
             .get("data", {})
             .get("config", {})
         )
@@ -132,7 +133,8 @@ async def write_file(
     def write():
         with open(hass.config.path(path), "w") as open_file:
             if as_yaml:
-                yaml.dump(content, open_file, default_flow_style=False, allow_unicode=True)
+                yaml.dump(content, open_file,
+                          default_flow_style=False, allow_unicode=True)
             else:
                 open_file.write(content)
 
@@ -189,9 +191,9 @@ def get_hacs_components(hass: HomeAssistant):
 
 @callback
 def get_ha_installed_addons(hass: HomeAssistant) -> List[Dict[str, Any]]:
-    if not hass.components.hassio.is_hassio():
+    if is_hassio(hass):
         return []
-    supervisor_info = hass.components.hassio.get_supervisor_info()
+    supervisor_info = get_supervisor_info(hass)
 
     if supervisor_info:
         return supervisor_info.get("addons", [])
