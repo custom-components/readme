@@ -12,3 +12,4 @@ home-assistant.*
 
 ## Integration files
 templates
+ui-lovelace.yaml

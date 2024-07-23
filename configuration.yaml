@@ -5,3 +5,4 @@ logger:
     custom_components.readme: debug
 
 readme:
+  convert_lovelace: true

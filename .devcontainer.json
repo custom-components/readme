@@ -1,26 +1,35 @@
 {
 	"name": "custom-components/readme",
-	"image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.10-bullseye",
-	"remoteUser": "vscode",
-	"context": ".",
-	"forwardPorts": [
-		"9123:8123"
-	],
+	"image": "mcr.microsoft.com/devcontainers/python:3.12",
 	"postCreateCommand": "scripts/setup",
-	"extensions": [
-		"ms-python.python"
+	"forwardPorts": [
+		8123
 	],
-	"settings": {
-		"files.eol": "\n",
-		"editor.tabSize": 4,
-		"python.pythonPath": "/usr/local/bin/python",
-		"python.analysis.autoSearchPaths": false,
-		"python.linting.pylintEnabled": true,
-		"python.linting.enabled": true,
-		"python.formatting.provider": "black",
-		"editor.formatOnPaste": false,
-		"editor.formatOnSave": true,
-		"editor.formatOnType": true,
-		"files.trimTrailingWhitespace": true
-	}
+	"portsAttributes": {
+		"8123": {
+			"label": "Home Assistant",
+			"onAutoForward": "notify"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python"
+			],
+			"settings": {
+				"files.eol": "\n",
+				"editor.tabSize": 4,
+				"editor.formatOnPaste": true,
+				"editor.formatOnSave": true,
+				"editor.formatOnType": false,
+				"files.trimTrailingWhitespace": true,
+				"python.formatting.provider": "black",
+				"python.analysis.typeCheckingMode": "basic",
+				"python.analysis.autoImportCompletions": true,
+				"python.defaultInterpreterPath": "/usr/local/bin/python"
+			}
+		}
+	},
+	"remoteUser": "vscode",
+	"features": {}
 }
