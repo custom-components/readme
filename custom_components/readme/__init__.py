@@ -126,6 +126,11 @@ async def read_file(hass: HomeAssistant, path: str) -> Any:
     return await hass.async_add_executor_job(read)
 
 
+class IndentDumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(IndentDumper, self).increase_indent(flow, False)
+
+
 async def write_file(
     hass: HomeAssistant, path: str, content: Any, as_yaml=False
 ) -> None:
@@ -135,7 +140,12 @@ async def write_file(
         with open(hass.config.path(path), "w") as open_file:
             if as_yaml:
                 yaml.dump(
-                    content, open_file, default_flow_style=False, allow_unicode=True
+                    content,
+                    open_file,
+                    default_flow_style=False,
+                    allow_unicode=True,
+                    sort_keys=False,
+                    Dumper=IndentDumper,
                 )
             else:
                 open_file.write(content)
