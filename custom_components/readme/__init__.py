@@ -4,6 +4,7 @@ Use Jinja and data from Home Assistant to generate your README.md file
 For more details about this component, please refer to
 https://github.com/custom-components/readme
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -133,8 +134,9 @@ async def write_file(
     def write():
         with open(hass.config.path(path), "w") as open_file:
             if as_yaml:
-                yaml.dump(content, open_file,
-                          default_flow_style=False, allow_unicode=True)
+                yaml.dump(
+                    content, open_file, default_flow_style=False, allow_unicode=True
+                )
             else:
                 open_file.write(content)
 
@@ -220,14 +222,14 @@ def get_repository_name(repository) -> str:
 async def get_custom_integrations(hass: HomeAssistant):
     """Return a list with custom integration info."""
     custom_integrations = []
-    configured_integrations: List[
-        Integration | IntegrationNotFound | BaseException
-    ] = await asyncio.gather(
-        *[
-            async_get_integration(hass, domain)
-            for domain in async_get_loaded_integrations(hass)
-        ],
-        return_exceptions=True,
+    configured_integrations: List[Integration | IntegrationNotFound | BaseException] = (
+        await asyncio.gather(
+            *[
+                async_get_integration(hass, domain)
+                for domain in async_get_loaded_integrations(hass)
+            ],
+            return_exceptions=True,
+        )
     )
 
     for integration in configured_integrations:
