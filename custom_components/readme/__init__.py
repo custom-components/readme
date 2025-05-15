@@ -17,13 +17,15 @@ import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 import yaml
 from homeassistant import config_entries
-from homeassistant.core import callback, HomeAssistant
-from homeassistant.components.hassio import is_hassio, get_supervisor_info  # type: ignore
+from homeassistant.components.hassio import (  # type: ignore
+    get_supervisor_info,
+    is_hassio,
+)
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.template import AllStates
 from homeassistant.loader import Integration, IntegrationNotFound, async_get_integration
 from homeassistant.setup import async_get_loaded_integrations
 from jinja2 import Template
-
 
 from .const import DOMAIN, DOMAIN_DATA, LOGGER, STARTUP_MESSAGE
 
@@ -91,7 +93,6 @@ def create_initial_files(hass: HomeAssistant):
         os.mkdir(hass.config.path("templates"))
 
     if not os.path.exists(hass.config.path("templates/README.j2")):
-
         copyfile(
             hass.config.path("custom_components/readme/default.j2"),
             hass.config.path("templates/README.j2"),
@@ -120,7 +121,7 @@ async def read_file(hass: HomeAssistant, path: str) -> Any:
     """Read a file."""
 
     def read():
-        with open(hass.config.path(path), "r") as open_file:
+        with open(hass.config.path(path)) as open_file:
             return open_file.read()
 
     return await hass.async_add_executor_job(read)
@@ -202,7 +203,7 @@ def get_hacs_components(hass: HomeAssistant):
 
 
 @callback
-def get_ha_installed_addons(hass: HomeAssistant) -> List[Dict[str, Any]]:
+def get_ha_installed_addons(hass: HomeAssistant) -> list[dict[str, Any]]:
     if is_hassio(hass):
         return []
     supervisor_info = get_supervisor_info(hass)
@@ -232,14 +233,14 @@ def get_repository_name(repository) -> str:
 async def get_custom_integrations(hass: HomeAssistant):
     """Return a list with custom integration info."""
     custom_integrations = []
-    configured_integrations: List[Integration | IntegrationNotFound | BaseException] = (
-        await asyncio.gather(
-            *[
-                async_get_integration(hass, domain)
-                for domain in async_get_loaded_integrations(hass)
-            ],
-            return_exceptions=True,
-        )
+    configured_integrations: list[
+        Integration | IntegrationNotFound | BaseException
+    ] = await asyncio.gather(
+        *[
+            async_get_integration(hass, domain)
+            for domain in async_get_loaded_integrations(hass)
+        ],
+        return_exceptions=True,
     )
 
     for integration in configured_integrations:
