@@ -1,6 +1,7 @@
 {
   "domain": "readme",
   "name": "Generate readme",
+  "after_dependencies": ["hassio"],
   "codeowners": ["@ludeeus"],
   "config_flow": true,
   "documentation": "https://github.com/custom-components/readme",
