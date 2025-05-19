@@ -2,7 +2,7 @@
   "name": "Generate readme",
   "zip_release": true,
   "filename": "readme.zip",
-  "homeassistant": "2021.5.0",
+  "homeassistant": "2025.5.0",
   "hide_default_branch": true,
   "render_readme": true,
   "hacs": "0.19.1"
