@@ -27,7 +27,7 @@ from homeassistant.loader import Integration, IntegrationNotFound, async_get_int
 from homeassistant.setup import async_get_loaded_integrations
 from jinja2 import Template
 
-from .const import DOMAIN, DOMAIN_DATA, LOGGER, STARTUP_MESSAGE
+from .const import DOMAIN, DOMAIN_DATA, LOGGER
 
 CONFIG_SCHEMA = vol.Schema(
     {DOMAIN: vol.Schema({vol.Optional("convert_lovelace"): cv.boolean})},
@@ -40,9 +40,6 @@ async def async_setup(hass: HomeAssistant, config: dict):
     if config.get(DOMAIN) is None:
         # We get her if the integration is set up using config flow
         return True
-
-    # Print startup message
-    LOGGER.info(STARTUP_MESSAGE)
 
     # Create DATA dict
     hass.data.setdefault(DOMAIN_DATA, config[DOMAIN])
@@ -70,9 +67,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry):
                 hass.config_entries.async_remove(config_entry.entry_id)
             )
         return True
-
-    # Print startup message
-    LOGGER.info(STARTUP_MESSAGE)
 
     # Create DATA dict
     hass.data[DOMAIN_DATA] = config_entry.data
