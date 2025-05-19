@@ -1,0 +1,46 @@
+target-version = "py313"
+
+[lint]
+select = [
+    "ALL",
+]
+
+ignore = [
+    "ANN001",
+    "ANN201",
+    "ANN202",
+    "ANN204",
+    "ANN401",
+    "ARG001",
+    "ARG002",
+    "B006",
+    "BLE001",
+    "COM812",
+    "D101",
+    "D102",
+    "D103",
+    "D203",
+    "D205",
+    "D212",
+    "D400",
+    "D415",
+    "F401",
+    "FBT002",
+    "FBT003",
+    "ISC001",
+    "PGH003",
+    "PTH102",
+    "PTH110",
+    "PTH123",
+    "UP008",
+    "UP035",
+]
+
+[lint.flake8-pytest-style]
+fixture-parentheses = false
+
+[lint.pyupgrade]
+keep-runtime-typing = true
+
+[lint.mccabe]
+max-complexity = 25

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
+
 set -e
 
 cd "$(dirname "$0")/.."
-hass -c .
+
+# Set the python path to include our custom_components directory
+export PYTHONPATH="${PYTHONPATH}:${PWD}/custom_components"
+
+# Start Home Assistant
+hass --config "${PWD}/config" --debug

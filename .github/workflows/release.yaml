@@ -1,61 +1,55 @@
-name: Release Workflow
+name: Publish
 
 on:
   release:
     types:
       - published
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
-  release:
-    name: Release
+  release_zip_file:
+    name: Publish readme zip file asset
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: 🔢 Get release version
-        id: version
-        uses: home-assistant/actions/helpers/version@master
-
-      - name: ℹ️ Get integration information
-        id: information
-        run: |
-          name=$(find custom_components/ -type d -maxdepth 1 | tail -n 1 | cut -d "/" -f2)
-          echo "::set-output name=name::$name"
-
-      - name: 🖊️ Set version number
-        run: |
-          sed -i '/INTEGRATION_VERSION = /c\INTEGRATION_VERSION = "${{ steps.version.outputs.version }}"' \
-            "${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/const.py"
-          jq '.version = "${{ steps.version.outputs.version }}"' \
-            "${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/manifest.json" > tmp \
-            && mv -f tmp "${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/manifest.json"
-
-      - name: 👀 Validate data
-        run: |
-          if ! grep -q 'INTEGRATION_VERSION = "${{ steps.version.outputs.version }}"' ${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/const.py; then
-            echo "The version in custom_components/${{ steps.information.outputs.name }}/const.py was not correct"
-            cat ${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/const.py | grep INTEGRATION_VERSION
-            exit 1
-          fi
-          manifestversion=$(jq -r '.version' ${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/manifest.json)
-          if [ "$manifestversion" != "${{ steps.version.outputs.version }}" ]; then
-            echo "The version in custom_components/${{ steps.information.outputs.name }}/manifest.json was not correct"
-            echo "$manifestversion"
-            exit 1
-          fi
-
-      - name: 📦 Create zip file for the integration
-        run: |
-          cd "${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}"
-          zip ${{ steps.information.outputs.name }}.zip -r ./
-
-      - name: 📤 Upload the zip file as a release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 🛠️ Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: "${{ github.workspace }}/custom_components/${{ steps.information.outputs.name }}/${{ steps.information.outputs.name }}.zip"
-          asset_name: ${{ steps.information.outputs.name }}.zip
-          asset_content_type: application/zip
+          python-version: "3.13"
+
+      - name: 🔢 Get version
+        if: ${{ github.event_name == 'release' }}
+        id: version
+        uses: home-assistant/actions/helpers/version@a19f5f4e08ef2786e4604a948f62addd937a6bc9 # master
+
+      # Pack the readme dir as a zip and upload to the release
+      - name: 📦 ZIP readme dir
+        run: |
+          cd ${{ github.workspace }}/custom_components/readme
+          zip readme.zip -r ./
+
+      - name: 📤 Upload zip to action
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ github.event_name == 'push' }}
+        with:
+          name: readme.zip
+          path: ${{ github.workspace }}/custom_components/readme/readme.zip
+          retention-days: 7
+
+      - name: 📤 Upload zip to release
+        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
+        if: ${{ github.event_name == 'release' }}
+        with:
+          files: ${{ github.workspace }}/custom_components/readme/readme.zip

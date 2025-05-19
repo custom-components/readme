@@ -19,27 +19,7 @@ with the list of all your installed add-ons and custom components_
 
 1. Download it with HACS
 2. Restart Home Assistant
-3. Choose:
-   - Add `readme:` to your HA configuration.
-   - In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Generate readme"
-
-Using your HA configuration directory (folder) as a starting point you should now also have this:
-
-```text
-custom_components/readme/.translations/en.json
-custom_components/readme/__init__.py
-custom_components/readme/config_flow.py
-custom_components/readme/const.py
-custom_components/readme/default.j2
-custom_components/readme/manifest.json
-custom_components/readme/services.yaml
-```
-
-## Example configuration.yaml
-
-```yaml
-readme:
-```
+3. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Generate readme"
 
 ## Warning!
 

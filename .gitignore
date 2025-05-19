@@ -1,15 +1,18 @@
-## Python temp files
+# artifacts
 __pycache__
+.pytest*
+*.egg-info
+*/build/*
+*/dist/*
 
-## Home Assistant files
-.cloud
-.storage
-.HA_VERSION
-blueprints
-deps
-home-assistant.*
-*.db*
 
-## Integration files
-templates
-ui-lovelace.yaml
+# misc
+.coverage
+.vscode
+coverage.xml
+.ruff_cache
+
+
+# Home Assistant configuration
+config/*
+!config/configuration.yaml
