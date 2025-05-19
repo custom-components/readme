@@ -6,7 +6,7 @@ LOGGER: logging.Logger = logging.getLogger(__package__)
 
 DOMAIN = "readme"
 DOMAIN_DATA = "readme_data"
-INTEGRATION_VERSION = "0.0.0"
+INTEGRATION_VERSION = "0.6.0"
 
 ISSUE_URL = "https://github.com/custom-components/readme/issues"
 
