@@ -19,9 +19,9 @@ import yaml
 from homeassistant import config_entries
 from homeassistant.components.hassio import (  # type: ignore
     get_supervisor_info,
-    is_hassio,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.hassio import is_hassio
 from homeassistant.helpers.template import AllStates
 from homeassistant.loader import Integration, IntegrationNotFound, async_get_integration
 from homeassistant.setup import async_get_loaded_integrations
