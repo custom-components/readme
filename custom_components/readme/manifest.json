@@ -1,11 +1,15 @@
 {
   "domain": "readme",
   "name": "Generate readme",
-  "after_dependencies": ["hassio"],
-  "codeowners": ["@ludeeus"],
+  "after_dependencies": [
+    "hassio"
+  ],
+  "codeowners": [
+    "@ludeeus"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/custom-components/readme",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/custom-components/issues",
-  "version": "0.0.0"
+  "version": "0.6.0"
 }
