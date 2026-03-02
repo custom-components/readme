@@ -5,7 +5,7 @@ from collections import OrderedDict
 import voluptuous as vol
 from homeassistant import config_entries
 
-from .const import DOMAIN
+from .const import DOCUMENTATION_URL, DOMAIN
 
 
 @config_entries.HANDLERS.register(DOMAIN)
@@ -43,7 +43,10 @@ class ReadmeFlowHandler(config_entries.ConfigFlow):
         data_schema = OrderedDict()
         data_schema[vol.Required("convert", default=convert)] = bool
         return self.async_show_form(
-            step_id="user", data_schema=vol.Schema(data_schema), errors=self._errors
+            step_id="user",
+            data_schema=vol.Schema(data_schema),
+            description_placeholders={"documentation_url": DOCUMENTATION_URL},
+            errors=self._errors,
         )
 
     async def async_step_import(self, user_input):  # pylint: disable=unused-argument
