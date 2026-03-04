@@ -32,7 +32,7 @@ jobs:
       - name: 🔢 Get version
         if: ${{ github.event_name == 'release' }}
         id: version
-        uses: home-assistant/actions/helpers/version@55b4a5d23e09d627c2773c2ef82afa98904d65b4 # master
+        uses: home-assistant/actions/helpers/version@dce0e860c68256ef2902ece06afa5401eb4674e1 # master
 
       # Pack the readme dir as a zip and upload to the release
       - name: 📦 ZIP readme dir
@@ -41,7 +41,7 @@ jobs:
           zip readme.zip -r ./
 
       - name: 📤 Upload zip to action
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ github.event_name == 'push' }}
         with:
           name: readme.zip
