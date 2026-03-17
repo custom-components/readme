@@ -34,6 +34,7 @@ ignore = [
     "PTH123",
     "UP008",
     "UP035",
+    "ASYNC240",
 ]
 
 [lint.flake8-pytest-style]
