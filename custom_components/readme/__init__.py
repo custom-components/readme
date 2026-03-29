@@ -18,7 +18,7 @@ import voluptuous as vol
 import yaml
 from homeassistant import config_entries
 from homeassistant.components.hassio import (  # type: ignore
-    get_supervisor_info,
+    get_addons_info,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.hassio import is_hassio
@@ -200,10 +200,10 @@ def get_hacs_components(hass: HomeAssistant):
 def get_ha_installed_addons(hass: HomeAssistant) -> list[dict[str, Any]]:
     if not is_hassio(hass):
         return []
-    supervisor_info = get_supervisor_info(hass)
+    addons_info = get_addons_info(hass)
 
-    if supervisor_info:
-        return supervisor_info.get("addons", [])
+    if addons_info:
+        return list(addons_info.values())
     return []
 
 
